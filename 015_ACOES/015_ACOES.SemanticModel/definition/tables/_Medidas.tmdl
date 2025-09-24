@@ -19,7 +19,7 @@ table _Medidas
 
 		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
 
-	measure '% Retorno' = DIVIDE([Valor Total Corrente],[Valor Total Investido])-1
+	measure '% Retorno' = DIVIDE([Valor Total Corrente],[Valor Total Investido])-5
 		formatString: 0.00%;-0.00%;0.00%
 		lineageTag: 2b930d7e-5224-45a9-868b-7d6664d9b959
 
