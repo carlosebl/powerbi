@@ -1,0 +1,54 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "f7309376c2c6950d0373",
+  "position": {
+    "x": 387.87878787878788,
+    "y": 0,
+    "z": 2000,
+    "height": 116.36363636363636,
+    "width": 300.60606060606057
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "P_SIMULA"
+                    }
+                  },
+                  "Property": "P_SIMULA Valor"
+                }
+              },
+              "queryRef": "P_SIMULA.P_SIMULA Valor"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "P_SIMULA"
+                  }
+                },
+                "Property": "P_SIMULA Valor"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

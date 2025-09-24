@@ -1,0 +1,26 @@
+table P_MES_ACUM
+	lineageTag: 1d508fe7-df02-4a63-8515-dd3b76daf2be
+
+	measure 'P_MES_ACUM Valor' = SELECTEDVALUE('P_MES_ACUM'[P_MES_ACUM], 6)
+		formatString: 0%;-0%;0%
+		lineageTag: 00ab0ac4-4425-4c67-b8ad-274986d66f4c
+
+	column P_MES_ACUM
+		formatString: 0
+		lineageTag: 2a431739-e49a-4752-b0a6-1323e467fba9
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+	partition P_MES_ACUM-f8dc21e0-a9bd-4d68-9a3f-e4d6c7e8e23a = calculated
+		mode: import
+		source = GENERATESERIES(1, 12, 1)
+
+	annotation PBI_Id = 144acc8dac49499cb142cd47fd540aea
+

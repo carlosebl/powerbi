@@ -1,0 +1,50 @@
+table D_UF
+	lineageTag: 27160126-c949-40f9-8109-9e408f7f5d4c
+
+	column Cod_uf
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 4279c504-ead1-4883-a84c-1f611259dfae
+		summarizeBy: none
+		sourceColumn: Cod_uf
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sigla
+		dataType: string
+		lineageTag: a7b45b58-2eee-4904-9718-62fc40486b33
+		summarizeBy: none
+		sourceColumn: Sigla
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column nome_estado
+		dataType: string
+		lineageTag: 86f81308-89f6-4eba-994b-f458929948cb
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: nome_estado
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	partition D_UF-98726cae-c586-4bc8-abb2-668add9f5698 = m
+		mode: import
+		queryGroup: Dimensao
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("D:\EAD\Power BI 3\Fontes\Vendas\Dimensoes\D_UF.xlsx"), null, true),
+				    D_UF_Sheet = Fonte{[Item="D_UF",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(D_UF_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Cod_uf", Int64.Type}, {"Sigla", type text}, {"nome_estado", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+

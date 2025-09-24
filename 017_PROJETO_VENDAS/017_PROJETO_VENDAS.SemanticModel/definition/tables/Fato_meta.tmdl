@@ -1,0 +1,68 @@
+table Fato_meta
+	lineageTag: 5a490b6a-d14c-4f07-a342-43c0ea0ad0cf
+
+	column 'Nome da Origem'
+		dataType: string
+		isHidden
+		lineageTag: c9ea6576-2da8-40cf-8cec-ea2e2a5bd553
+		summarizeBy: none
+		sourceColumn: Nome da Origem
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Mês/Ano
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: 736d98c9-6d13-44f2-a683-b1fd480acda5
+		summarizeBy: none
+		sourceColumn: Mês/Ano
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Cod_vend
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 84934b77-69af-4db1-87e6-1c78525dcb8b
+		summarizeBy: none
+		sourceColumn: Cod_vend
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Valor_meta
+		dataType: double
+		lineageTag: d7f480c9-3ab3-42d6-bef2-7abeb4432ca4
+		summarizeBy: sum
+		sourceColumn: Valor_meta
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Fato_meta-969f92f6-2af1-4695-bc94-88d740f4616a = m
+		mode: import
+		queryGroup: Fato
+		source =
+				let
+				    Fonte = Folder.Files("D:\EAD\Power BI 3\Fontes\Vendas\Fato_meta"),
+				    #"Arquivos Ocultos Filtrados1" = Table.SelectRows(Fonte, each [Attributes]?[Hidden]? <> true),
+				    #"Invocar Função Personalizada1" = Table.AddColumn(#"Arquivos Ocultos Filtrados1", "Transformar Arquivo", each #"Transformar Arquivo"([Content])),
+				    #"Colunas Renomeadas1" = Table.RenameColumns(#"Invocar Função Personalizada1", {"Name", "Nome da Origem"}),
+				    #"Outras Colunas Removidas1" = Table.SelectColumns(#"Colunas Renomeadas1", {"Nome da Origem", "Transformar Arquivo"}),
+				    #"Coluna de Tabela Expandida1" = Table.ExpandTableColumn(#"Outras Colunas Removidas1", "Transformar Arquivo", Table.ColumnNames(#"Transformar Arquivo"(#"Arquivo de Amostra"))),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Coluna de Tabela Expandida1",{{"Nome da Origem", type text}, {"Mês/Ano", type date}, {"Cod_vend", Int64.Type}, {"Valor_meta", type number}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+

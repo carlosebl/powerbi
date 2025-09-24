@@ -1,0 +1,41 @@
+table _Medidas
+	lineageTag: 61f3a9ff-119a-4168-bf98-6f9e3490e0f3
+
+	measure 'Valor Total Investido' = SUM(F_acoes[Custo Basico])
+		formatString: "R$"#,0.###############;-"R$"#,0.###############;"R$"#,0.###############
+		lineageTag: 03cbed1f-0bc1-4a35-8536-d2fa4b576c86
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Valor Total Corrente' = SUM(F_acoes[Valor Mercado])
+		formatString: "R$"#,0.###############;-"R$"#,0.###############;"R$"#,0.###############
+		lineageTag: 2ba39de9-fbc5-4bbe-9dd9-74d02d088e7b
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure Ganho/Perda = [Valor Total Corrente]-[Valor Total Investido]
+		formatString: "R$"#,0.###############;-"R$"#,0.###############;"R$"#,0.###############
+		lineageTag: 2ae09ea6-2503-4a50-950b-4003afe684e7
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure '% Retorno' = DIVIDE([Valor Total Corrente],[Valor Total Investido])-1
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 2b930d7e-5224-45a9-868b-7d6664d9b959
+
+	column Value
+		isHidden
+		formatString: 0
+		lineageTag: b319cfd1-988b-437e-8512-5154e0a693af
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Medidas-a481c723-9811-4e25-a402-abdc06e1baea = calculated
+		mode: import
+		source = {1}
+
+	annotation PBI_Id = 101a548b5bd346809139a0e6ab3dcf44
+

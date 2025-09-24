@@ -1,0 +1,20 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: pt-BR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["F_acoes"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table F_acoes
+ref table DateTableTemplate_bfc02e1e-e020-404c-a890-ab96ff351d59
+ref table _Medidas
+
+ref cultureInfo pt-BR
+

@@ -1,0 +1,39 @@
+table D_Canal_vendas
+	lineageTag: cb4dc4d7-e469-4413-84cb-d9a2d0702d44
+
+	column Cod_Canal_vendas
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d2042594-a1c8-4fdb-95bc-f272e46fd398
+		summarizeBy: none
+		sourceColumn: Cod_Canal_vendas
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Desc_Canal_vendas
+		dataType: string
+		lineageTag: 6c09d4f4-156d-4b15-a189-ad5d6bf577d7
+		summarizeBy: none
+		sourceColumn: Desc_Canal_vendas
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	partition D_Canal_vendas-036744a8-5004-4ac8-9b1d-e761b3bea27f = m
+		mode: import
+		queryGroup: Dimensao
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("D:\EAD\Power BI 3\Fontes\Vendas\Dimensoes\D_CANAL_VENDASs.xlsx"), null, true),
+				    D_Canal_vendas_Sheet = Fonte{[Item="D_Canal_vendas",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(D_Canal_vendas_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Cod_Canal_vendas", Int64.Type}, {"Desc_Canal_vendas", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+

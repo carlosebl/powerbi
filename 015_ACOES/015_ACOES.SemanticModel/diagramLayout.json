@@ -1,0 +1,40 @@
+{
+  "version": "1.0.0",
+  "diagrams": [
+    {
+      "name": "Todas as tabelas",
+      "zoomValue": 100,
+      "isDefault": true,
+      "tables": [
+        "F_acoes",
+        "_Medidas"
+      ],
+      "layout": {
+        "boundingBoxWidth": 534.3,
+        "boundingBoxHeight": 300,
+        "boundingBoxPosition": {
+          "x": 0,
+          "y": 0
+        },
+        "nodes": [
+          {
+            "height": 227,
+            "layedOut": true,
+            "left": 0,
+            "nodeIndex": "F_acoes",
+            "top": 0,
+            "width": 180
+          },
+          {
+            "height": 300,
+            "layedOut": true,
+            "left": 354.3,
+            "nodeIndex": "_Medidas",
+            "top": 0,
+            "width": 180
+          }
+        ]
+      }
+    }
+  ]
+}

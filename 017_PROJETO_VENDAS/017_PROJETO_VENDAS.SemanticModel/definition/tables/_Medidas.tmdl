@@ -1,0 +1,215 @@
+table _Medidas
+	lineageTag: b180a661-c5b1-49e3-87f6-b6636f466545
+
+	measure '00 Vendas Geral' = CALCULATE(SUMX(Fato_venda,Fato_venda[Qtde]*Fato_venda[Pr_Unit]))
+		lineageTag: 80441a73-f86f-4cef-9975-75689999268a
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '01 Vendas Valid' = ```
+			
+			        // EXEMPLO  1
+			        // CALCULATE(SUMX(Fato_venda;Fato_venda[Qtde]*Fato_venda[Pr_Unit]);Fato_venda[Situacao]="N")
+			        //EXEMPLO 2 REUTILIZANDO MEDIDAS
+			        CALCULATE([00 Vendas Geral],Fato_venda[Situacao]="N")
+			```
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 68df9f42-5fe9-4bb7-aeba-2398f19c9e99
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure '02 Vendas Cancel' = CALCULATE([00 Vendas Geral],Fato_venda[Situacao]="C")
+		lineageTag: b0b1af57-1500-424c-9fd0-b63dd6a1adef
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '03 Vendas ALL' = CALCULATE([01 Vendas Valid],ALL(Fato_venda))
+		lineageTag: 94214e90-4d4c-4c6d-ad4f-6e7962f606d7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '04 % Partic' = DIVIDE([01 Vendas Valid],[03 Vendas ALL])
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 2fa2dbc3-fa74-4dc0-ac5b-4fe7d71b8180
+
+	measure '05 Vendas ALLSELECT' = CALCULATE([01 Vendas Valid],ALLSELECTED(Fato_venda))
+		lineageTag: 478e48fd-5c99-44f8-b95c-7f403e8f9bf0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '06 Vendas C/ Vnd' = ```
+			
+			     //OPÇÃO 1
+			      CALCULATE([01 Vendas Valid],Fato_venda[Cod_Vend]<>BLANK())
+			     //OPÇÃO 2
+			     // CALCULATE(SUMX(Fato_venda;Fato_venda[Qtde]*Fato_venda[Pr_Unit]);
+			     //                 Fato_venda[Situacao]="N";
+			     //                 Fato_venda[Cod_Vend]<>BLANK()
+			     // )
+			//OPÇÃO 3
+			//      CALCULATE(SUMX(Fato_venda;Fato_venda[Qtde]*Fato_venda[Pr_Unit]);
+			//                FILTER(Fato_venda;
+			//                      Fato_venda[Situacao]="N" &&
+			//                      Fato_venda[Cod_Vend]<>BLANK()
+			//                )
+			//      )
+			```
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: 5bdecc49-0124-4e05-b7ec-c656034023ce
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure '07 Vendas S/ vend' = CALCULATE([01 Vendas Valid],Fato_venda[Cod_Vend]=BLANK())
+		lineageTag: 20cc94d1-10fc-4e1e-be0d-b768b403226c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '08 Qtd Ln S/ Vend' = CALCULATE(COUNTROWS(Fato_venda),Fato_venda[Cod_Vend]=BLANK())
+		formatString: 0
+		lineageTag: 55b7c7e8-301a-4704-b60e-951ba27e64b3
+
+	measure '09 Qtd Ln C/ Vend' = CALCULATE(COUNTROWS(Fato_venda),Fato_venda[Cod_Vend]<>BLANK())
+		formatString: 0
+		lineageTag: d9e56054-7754-41cd-b4b7-0ed890a0518f
+
+	measure '10 Qtd Vnd Normal' = CALCULATE(COUNTROWS(Fato_venda),Fato_venda[Situacao]="N")
+		formatString: 0
+		lineageTag: 6d22bc13-cc69-43cc-bf87-04d75230d47b
+
+	measure '11 Qtd Vnd Cancel' = CALCULATE(COUNTROWS(Fato_venda),Fato_venda[Situacao]="C")
+		formatString: 0
+		lineageTag: 6a8314fc-87c1-4c08-a133-7ed493600fa9
+
+	measure '12 Custo Venda' = CALCULATE(SUMX(Fato_venda,Fato_venda[Qtde]*Fato_venda[Pr_custo]),Fato_venda[Situacao]="N")
+		lineageTag: c331968f-75b6-4ac9-9fbb-2e2f732ae5c8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '13 % Lucro' = DIVIDE([01 Vendas Valid],[12 Custo Venda])-1
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 04245c9a-a729-43d2-a8c6-55bbc5a94bb9
+
+	measure '14 Lucro Bruto' = [01 Vendas Valid]-[12 Custo Venda]
+		lineageTag: 2815aff1-5497-466f-bbb4-e51f628892a8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '15 Val Meta' = CALCULATE(SUM(Fato_meta[Valor_meta]))
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		lineageTag: d496e213-37f2-4724-a624-f498c7e4c79c
+
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
+
+	measure '16 % Meta' = DIVIDE([06 Vendas C/ Vnd],[15 Val Meta],0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: d0cbcb87-0a9d-4a81-8985-126867174f96
+
+	measure '17 % Rest' = ```
+			
+			  IF(1-[16 % Meta]<0,0,1-[16 % Meta])
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: e72552f4-3a6d-4f3b-beaf-a31781c701b3
+
+	measure '18 VAL YOY' = CALCULATE([01 Vendas Valid],SAMEPERIODLASTYEAR(D_CALENDARIO[Data_ref]))
+		lineageTag: b0b37dba-e382-4219-8fed-9f88411fdd10
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '19 VAL MOM' = CALCULATE([01 Vendas Valid],PREVIOUSMONTH(D_CALENDARIO[Data_ref]))
+		lineageTag: a81b40e5-3dbb-47e9-ab8b-9f21528deca0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '20 Val Mes Seguinte' = CALCULATE([01 Vendas Valid],NEXTMONTH(D_CALENDARIO[Data_ref]))
+		lineageTag: 67e97ae5-05df-4dd8-b35a-dc2d5930c3f9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '21 Val Acum 12 M' =
+			CALCULATE([01 Vendas Valid],
+			                         DATESINPERIOD(D_CALENDARIO[Data_ref],
+			                          LASTDATE(D_CALENDARIO[Data_ref]),-12,MONTH)
+			)
+		lineageTag: bec2ff98-d997-4020-8a44-786c238a1530
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '22 Val Acum 6 M' =
+			CALCULATE([01 Vendas Valid],
+			                            DATESINPERIOD(D_CALENDARIO[Data_ref],
+			                            LASTDATE(D_CALENDARIO[Data_ref]),-6,MONTH)
+			)
+		lineageTag: 15d14beb-2456-470e-a456-5b5ec68bd7b4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '23 Val Acum D' =
+			CALCULATE([01 Vendas Valid],
+			                            DATESINPERIOD(D_CALENDARIO[Data_ref],
+			                            LASTDATE(D_CALENDARIO[Data_ref]),P_MES_ACUM[P_MES_ACUM Valor]*-1,MONTH)
+			)
+		lineageTag: 7fababbe-f599-4e1b-9a24-0ff8f41a0b5e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '24 Simula Vendas' = ```
+			
+			   [01 Vendas Valid]*P_SIMULA[P_SIMULA Valor]
+			```
+		lineageTag: d87562f6-e808-46e8-a906-25f33cafb8f6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '25 Simula Vendas' = ```
+			
+			   ([01 Vendas Valid]*P_SIMULA[P_SIMULA Valor])+[01 Vendas Valid]
+			```
+		lineageTag: 4a8ab392-327a-4860-a5b6-ee03c987a040
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '26 % MOM' = ```
+			
+			     //VALOR CONTEXTO ATUAL 
+			     VAR V_VAL_ATUAL = CALCULATE([01 Vendas Valid])
+			     //VALOR CONTEXTO MODIFICADO
+			     VAR V_VAL_ANTERIOR = CALCULATE([01 Vendas Valid],PREVIOUSMONTH(D_CALENDARIO[Data_ref]))
+			     //CALCULO
+			     VAR V_CALC = DIVIDE(V_VAL_ATUAL,V_VAL_ANTERIOR)-1
+			     RETURN
+			      IF(V_VAL_ANTERIOR=BLANK(),BLANK(),V_CALC)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 63e2b77b-35d1-4533-825f-cc04be7112ae
+
+	measure '27 Val Max' = [06 Vendas C/ Vnd]*1.2
+		lineageTag: 0fbf22fb-7b9f-4636-b62c-4af7f29d7564
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure '28 KPI' = IF([16 % Meta]<1,"🔴","🟢")
+		lineageTag: 811332e7-9e4a-45c2-b287-ab84d2e807e9
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	measure '29 VendedorX' = IF(HASONEFILTER(D_Vendedor[Nome_Vend]),VALUES(D_Vendedor[Nome_Vend]),"Todos")
+		lineageTag: 07d9b5a5-3c0d-4fe8-aeb5-2dc4d7996ac6
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Value
+		formatString: 0
+		lineageTag: 6dbbebf8-795a-41c9-a3aa-4577000bf6a8
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Value]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Medidas-b2bab68a-f080-408b-8795-618aa36ed4ad = calculated
+		mode: import
+		source = {1}
+
+	annotation PBI_Id = bbc524781de14d2381b67ad8fc761ee6
+

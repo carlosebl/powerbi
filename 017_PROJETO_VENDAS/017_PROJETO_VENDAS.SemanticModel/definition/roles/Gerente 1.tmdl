@@ -1,0 +1,7 @@
+role 'Gerente 1'
+	modelPermission: read
+
+	tablePermission D_Vendedor = [Cod_Vend] in {1,2,3,4,5}
+
+	annotation PBI_Id = 35b2cd6e40be4d668bbf59b9a7fec68a
+

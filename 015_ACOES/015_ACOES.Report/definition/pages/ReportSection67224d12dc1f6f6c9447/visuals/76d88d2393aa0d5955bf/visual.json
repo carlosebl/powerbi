@@ -1,0 +1,113 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "76d88d2393aa0d5955bf",
+  "position": {
+    "x": 16,
+    "y": 64,
+    "z": 9000,
+    "height": 48.000000000000007,
+    "width": 1248
+  },
+  "visual": {
+    "visualType": "ScrollingTextVisual1448795304508",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "F_acoes"
+                    }
+                  },
+                  "Property": "NomeAção"
+                }
+              },
+              "queryRef": "F_acoes.NomeAção"
+            }
+          ]
+        },
+        "Measure Absolute": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "F_acoes"
+                        }
+                      },
+                      "Property": "PreçoCorrente"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(F_acoes.PreçoCorrente)"
+            }
+          ]
+        },
+        "Measure Deviation": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "% Retorno"
+                }
+              },
+              "queryRef": "_Medidas.% Retorno"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "F_acoes"
+                      }
+                    },
+                    "Property": "PreçoCorrente"
+                  }
+                },
+                "Function": 0
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

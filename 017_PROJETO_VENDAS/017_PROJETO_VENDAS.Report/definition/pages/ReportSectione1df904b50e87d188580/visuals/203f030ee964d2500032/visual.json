@@ -1,0 +1,55 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "203f030ee964d2500032",
+  "position": {
+    "x": 953.073593073593,
+    "y": 0,
+    "z": 2000,
+    "height": 105.28138528138527,
+    "width": 317.22943722943722,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "P_MES_ACUM"
+                    }
+                  },
+                  "Property": "P_MES_ACUM Valor"
+                }
+              },
+              "queryRef": "P_MES_ACUM.P_MES_ACUM Valor"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "P_MES_ACUM"
+                  }
+                },
+                "Property": "P_MES_ACUM Valor"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

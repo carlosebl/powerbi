@@ -1,0 +1,113 @@
+table F_acoes
+	lineageTag: c1592c8b-4ad9-48e0-a9ab-588460631807
+
+	column NomeAção
+		dataType: string
+		lineageTag: d160f497-21c8-4117-b025-d54dfc484c82
+		summarizeBy: none
+		sourceColumn: NomeAção
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Símbolo
+		dataType: string
+		lineageTag: 6c9bdfb7-dfa3-4a3c-bc2c-e41a5a8db827
+		summarizeBy: none
+		sourceColumn: Símbolo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Ações
+		dataType: int64
+		formatString: 0
+		lineageTag: 62af07e0-68fc-46ab-9105-af0a24404616
+		summarizeBy: sum
+		sourceColumn: Ações
+
+		annotation SummarizationSetBy = Automatic
+
+	column PreçoCompra
+		dataType: decimal
+		formatString: "R$"#,0.###############;-"R$"#,0.###############;"R$"#,0.###############
+		lineageTag: 7ea8d9da-4d69-4bfe-a2c4-8597ed71317c
+		summarizeBy: sum
+		sourceColumn: PreçoCompra
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column PreçoCorrente
+		dataType: decimal
+		formatString: "R$"#,0.00;-"R$"#,0.00;"R$"#,0.00
+		lineageTag: e2b00bd1-7b2d-4bd0-94fc-aeb85b9ff87c
+		summarizeBy: sum
+		sourceColumn: PreçoCorrente
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column 'Custo Basico' = F_acoes[Ações]*F_acoes[PreçoCompra]
+		formatString: "R$"#,0.###############;-"R$"#,0.###############;"R$"#,0.###############
+		lineageTag: 627970b3-5f3b-4cb4-85e5-c03fdce011c5
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column 'Valor Mercado' = F_acoes[Ações]*F_acoes[PreçoCorrente]
+		formatString: "R$"#,0.###############;-"R$"#,0.###############;"R$"#,0.###############
+		lineageTag: 47a66b6c-679d-48ae-a0b9-f2772a100060
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column Ganho/Perda = F_acoes[Valor Mercado]-F_acoes[Custo Basico]
+		formatString: "R$"#,0.###############;-"R$"#,0.###############;"R$"#,0.###############
+		lineageTag: ee9087e2-5189-4dfd-afab-c89fae10848a
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column Dividendos = F_acoes[PreçoCorrente]-F_acoes[PreçoCompra]
+		formatString: "R$"#,0.###############;-"R$"#,0.###############;"R$"#,0.###############
+		lineageTag: 0148f476-9b6e-49df-82b0-5862da79a52f
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	column 'Pct Lucro' = DIVIDE(F_acoes[Valor Mercado],F_acoes[Custo Basico])-1
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 12af25df-e648-4821-8368-d050a34eedd9
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition F_acoes-38ed794b-c1d1-4024-924c-d705bde6e5a7 = m
+		mode: import
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("D:\EAD\Power BI 3\Fontes\EXCEL\007_AçõesDadosBrutos.xlsx"), null, true),
+				    Dados_Sheet = Fonte{[Item="Dados",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(Dados_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"NomeAção", type text}, {"Símbolo", type text}, {"Ações", Int64.Type}, {"PreçoCompra", Int64.Type}, {"PreçoCorrente", type number}}),
+				    #"Tipo Alterado1" = Table.TransformColumnTypes(#"Tipo Alterado",{{"PreçoCompra", Currency.Type}, {"PreçoCorrente", Currency.Type}})
+				in
+				    #"Tipo Alterado1"
+
+	annotation PBI_NavigationStepName = Navegação
+
+	annotation PBI_ResultType = Table
+

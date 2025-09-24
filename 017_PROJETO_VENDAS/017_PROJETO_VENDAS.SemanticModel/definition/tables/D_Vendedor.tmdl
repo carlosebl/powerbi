@@ -1,0 +1,39 @@
+table D_Vendedor
+	lineageTag: 709e0a06-fbc3-47df-b53f-b485112ede19
+
+	column Cod_Vend
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 8d7e4eb5-906d-482a-974c-fe64b4e176ce
+		summarizeBy: none
+		sourceColumn: Cod_Vend
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Nome_Vend
+		dataType: string
+		lineageTag: 82dd802b-a136-4f4a-b6f3-d057f60b72e2
+		summarizeBy: none
+		sourceColumn: Nome_Vend
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	partition D_Vendedor-8867042e-91f3-4e3a-947f-f10e32e9f3a2 = m
+		mode: import
+		queryGroup: Dimensao
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("D:\EAD\Power BI 3\Fontes\Vendas\Dimensoes\D_VENDEDORES.xlsx"), null, true),
+				    D_Vendedor_Sheet = Fonte{[Item="D_Vendedor",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(D_Vendedor_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Cod_Vend", Int64.Type}, {"Nome_Vend", type text}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+

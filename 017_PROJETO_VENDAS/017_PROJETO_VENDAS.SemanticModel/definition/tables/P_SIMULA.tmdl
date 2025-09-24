@@ -1,0 +1,27 @@
+table P_SIMULA
+	lineageTag: dc678317-db33-4aa6-88bc-0b460456b687
+
+	measure 'P_SIMULA Valor' = SELECTEDVALUE('P_SIMULA'[P_SIMULA], 0)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 7b270fe0-6a11-49a6-a803-abe28f9b9002
+
+	column P_SIMULA
+		lineageTag: 152a29a7-0f92-4a5b-9706-ce1d022dce58
+		summarizeBy: none
+		sourceColumn: [Value]
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 0
+				}
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition P_SIMULA-3f59d415-4454-48e5-9dbd-4b5244879c93 = calculated
+		mode: import
+		source = GENERATESERIES(0, 1.05, 0.05)
+
+	annotation PBI_Id = 39f8eb7fe5604d86b36640dd4619a46b
+

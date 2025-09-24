@@ -1,0 +1,51 @@
+table D_Produto
+	lineageTag: 9d259610-957d-42f3-883e-d5b724f278cc
+
+	column Cod_prod
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 2c0ac250-330e-43b2-84b8-222aa1feaf6d
+		summarizeBy: none
+		sourceColumn: Cod_prod
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Nome_produto
+		dataType: string
+		lineageTag: 17f76df0-f1b6-435e-9cb2-3ba84d5edb2d
+		summarizeBy: none
+		sourceColumn: Nome_produto
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Cod_Categoria
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 88b54929-c3c2-419b-aec4-437550bb7797
+		summarizeBy: none
+		sourceColumn: Cod_Categoria
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition D_Produto-a4aea2b5-183e-4687-a72d-94eabdece01b = m
+		mode: import
+		queryGroup: Dimensao
+		source =
+				let
+				    Fonte = Excel.Workbook(File.Contents("D:\EAD\Power BI 3\Fontes\Vendas\Dimensoes\D_PRODUTOS.xlsx"), null, true),
+				    D_Produto_Sheet = Fonte{[Item="D_Produto",Kind="Sheet"]}[Data],
+				    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(D_Produto_Sheet, [PromoteAllScalars=true]),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Cabeçalhos Promovidos",{{"Cod_prod", Int64.Type}, {"Nome_produto", type text}, {"Cod_Categoria", Int64.Type}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+

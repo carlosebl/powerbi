@@ -1,0 +1,188 @@
+table D_CALENDARIO
+	lineageTag: 038943ec-9a7d-43a0-8dca-80f8180a8384
+	dataCategory: Time
+
+	column Data_ref
+		isKey
+		formatString: dd/mm/yyyy
+		lineageTag: 9d18da31-e83a-436a-b797-a87560f536e6
+		summarizeBy: none
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column dia = DAY(D_CALENDARIO[Data_ref])
+		formatString: 0
+		lineageTag: 01da74ea-0b78-4acc-b059-df4ebdbd9848
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column mes = MONTH(D_CALENDARIO[Data_ref])
+		formatString: 0
+		lineageTag: 159583ae-40f1-4b48-aa76-8b6e4f10f284
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ano = YEAR(D_CALENDARIO[Data_ref])
+		formatString: 0
+		lineageTag: 9165275d-f793-4bf3-b2fd-4a558425871d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dia Semana' = WEEKDAY(D_CALENDARIO[Data_ref],1)
+		formatString: 0
+		lineageTag: 48f8670c-ebaa-4d06-b87f-095221f3b011
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Semana Mes' = WEEKNUM(D_CALENDARIO[Data_ref],1)
+		formatString: 0
+		lineageTag: 1960e0d8-1a86-4e52-b651-7ba5a117595f
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Mes Abrev' = FORMAT(D_CALENDARIO[Data_ref],"mmm")
+		lineageTag: 002a90ec-d8f5-469c-8f2d-118330537a11
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Mes Abrev2' = FORMAT(D_CALENDARIO[Data_ref],"mm")
+		lineageTag: 93b72bb2-a6af-4e54-9100-ce1edd865fb2
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Mex Extenso' = FORMAT(D_CALENDARIO[Data_ref],"mmmm")
+		lineageTag: 29b562d3-8cc7-496e-ba4f-f714f81ec57e
+		summarizeBy: none
+		sortByColumn: mes
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Mes/Ano = FORMAT(D_CALENDARIO[Data_ref],"mmm/yyyy")
+		lineageTag: 496ecd5c-fc1a-4e5c-9b28-a17d611b7c40
+		summarizeBy: none
+		sortByColumn: ORDENA_REF
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"D_CALENDARIO","TableItemName":"Mes/Ano (grupos)","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Quarter = FORMAT(D_CALENDARIO[Data_ref],"Q")&"º Trim"
+		lineageTag: 159969ca-9499-4d95-b07a-44128be7aba5
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Sem = IF(D_CALENDARIO[mes]<=6,"1º Sem","2º Sem")
+		lineageTag: 073177fc-f0ac-457a-b38b-1acea9248bcd
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Dia Semana Ext' = FORMAT(D_CALENDARIO[Data_ref],"ddd")
+		lineageTag: 8f53a220-73cb-4169-b0d4-c68c8ac11e9b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Dia Semana Ext 1' = FORMAT(D_CALENDARIO[Data_ref],"dddd")
+		lineageTag: 4d806066-878a-4dbb-bd4c-f64a6545fa6c
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column ORDENA_REF = FORMAT(D_CALENDARIO[Data_ref],"YYYYMM")
+		lineageTag: 5727731b-f107-45cf-89af-118b7cf92045
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column 'Mes/Ano (grupos)' =
+			SWITCH(
+			  TRUE,
+			  ISBLANK('D_CALENDARIO'[Mes/Ano]),
+			  "(Em branco)",
+			  'D_CALENDARIO'[Mes/Ano] IN {"jan/2020",
+			    "fev/2020",
+			    "mar/2020"},
+			  "fev/2020 & jan/2020 & mar/2020",
+			  "Outro"
+			)
+		lineageTag: 3180261b-fbf7-4535-9da4-82c8131b63d9
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "D_CALENDARIO"
+				          }
+				        },
+				        "Property": "Mes/Ano"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"d","Entity":"D_CALENDARIO"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"d"}},"Property":"Mes/Ano"}}],"GroupItems":[{"DisplayName":"(Em branco)","BlankDefaultPlaceholder":true},{"DisplayName":"fev/2020 & jan/2020 & mar/2020","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"d"}},"Property":"Mes/Ano"}}],"Values":[[{"Literal":{"Value":"'jan/2020'"}}],[{"Literal":{"Value":"'fev/2020'"}}],[{"Literal":{"Value":"'mar/2020'"}}]]}}},{"DisplayName":"Outro"}]}
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	hierarchy 'Ano Hierarquia'
+		lineageTag: 968a0a8c-863a-4c86-92a1-04e82bd7a76d
+
+		level Ano
+			lineageTag: 0cbabf89-9fdf-4f4f-9b6f-48643f78a022
+			column: Ano
+
+		level Sem
+			lineageTag: 4b6caaa9-e698-48cb-b6cb-b79edbae05bd
+			column: Sem
+
+		level Quarter
+			lineageTag: 3a5d84f9-01f4-4eda-8708-8423b32f81f2
+			column: Quarter
+
+		level 'Mex Extenso'
+			lineageTag: dcf709bb-ed63-442f-add9-317e2ea01b77
+			column: 'Mex Extenso'
+
+	partition D_CALENDARIO-4c5febf3-f346-47c5-9f20-effcb6891ac9 = calculated
+		mode: import
+		source = CALENDAR(MIN(Fato_venda[Dt_Venda]),MAX(Fato_venda[Dt_Venda]))
+
+	annotation PBI_Id = f99513fc2ee840c3996cb6470895aaae
+

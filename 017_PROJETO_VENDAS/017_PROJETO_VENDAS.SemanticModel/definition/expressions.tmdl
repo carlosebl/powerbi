@@ -1,0 +1,90 @@
+expression Parâmetro1 = #"Arquivo de Amostra" meta [IsParameterQuery=true, BinaryIdentifier=#"Arquivo de Amostra", Type="Binary", IsParameterQueryRequired=true]
+	lineageTag: 7b40dcaf-1bea-4536-b72b-78236d6ad013
+	queryGroup: 'Transformar Arquivo de Fato_meta\Consultas Auxiliares'
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transformar o Arquivo de Exemplo' =
+		let
+		    Fonte = Excel.Workbook(Parâmetro1, null, true),
+		    F_METAS_Sheet = Fonte{[Item="F_METAS",Kind="Sheet"]}[Data],
+		    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(F_METAS_Sheet, [PromoteAllScalars=true])
+		in
+		    #"Cabeçalhos Promovidos"
+	lineageTag: 9c1995a5-9e5e-4c13-96d3-a82c83b4ae13
+	queryGroup: 'Transformar Arquivo de Fato_meta'
+
+	annotation PBI_ResultType = Table
+
+expression 'Arquivo de Amostra' =
+		let
+		    Fonte = Folder.Files("D:\EAD\Power BI 3\Fontes\Vendas\Fato_meta"),
+		    Navegação1 = Fonte{0}[Content]
+		in
+		    Navegação1
+	lineageTag: 749abddf-d80e-4392-9ef8-a0eae56b3fb2
+	queryGroup: 'Transformar Arquivo de Fato_meta\Consultas Auxiliares'
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transformar Arquivo' =
+		let
+		    Fonte = (Parâmetro1 as binary) => let
+		    Fonte = Excel.Workbook(Parâmetro1, null, true),
+		    F_METAS_Sheet = Fonte{[Item="F_METAS",Kind="Sheet"]}[Data],
+		    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(F_METAS_Sheet, [PromoteAllScalars=true])
+		in
+		    #"Cabeçalhos Promovidos"
+		in
+		    Fonte
+	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transformar o Arquivo de Exemplo""}" ]
+	lineageTag: aee1a355-54aa-4deb-bb5b-de3195d8e39b
+	queryGroup: 'Transformar Arquivo de Fato_meta\Consultas Auxiliares'
+
+	annotation PBI_ResultType = Function
+
+expression Parâmetro2 = #"Arquivo de Amostra (2)" meta [IsParameterQuery=true, BinaryIdentifier=#"Arquivo de Amostra (2)", Type="Binary", IsParameterQueryRequired=true]
+	lineageTag: 1fad9c9a-e9c3-461a-8f37-3b807476cf30
+	queryGroup: 'Transformar Arquivo de Fato_venda\Consultas Auxiliares'
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transformar o Arquivo de Exemplo (2)' =
+		let
+		    Fonte = Excel.Workbook(Parâmetro2, null, true),
+		    F_Vendas_Sheet = Fonte{[Item="F_Vendas",Kind="Sheet"]}[Data],
+		    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(F_Vendas_Sheet, [PromoteAllScalars=true])
+		in
+		    #"Cabeçalhos Promovidos"
+	lineageTag: 3bd117bf-31c2-4e37-8fc7-0508155777f5
+	queryGroup: 'Transformar Arquivo de Fato_venda'
+
+	annotation PBI_ResultType = Table
+
+expression 'Arquivo de Amostra (2)' =
+		let
+		    Fonte = Folder.Files("D:\EAD\Power BI 3\Fontes\Vendas\Fato_venda"),
+		    Navegação1 = Fonte{0}[Content]
+		in
+		    Navegação1
+	lineageTag: d488f127-38e9-4015-ba5e-1c4adc038a85
+	queryGroup: 'Transformar Arquivo de Fato_venda\Consultas Auxiliares'
+
+	annotation PBI_ResultType = Binary
+
+expression 'Transformar Arquivo (2)' =
+		let
+		    Fonte = (Parâmetro2 as binary) => let
+		    Fonte = Excel.Workbook(Parâmetro2, null, true),
+		    F_Vendas_Sheet = Fonte{[Item="F_Vendas",Kind="Sheet"]}[Data],
+		    #"Cabeçalhos Promovidos" = Table.PromoteHeaders(F_Vendas_Sheet, [PromoteAllScalars=true])
+		in
+		    #"Cabeçalhos Promovidos"
+		in
+		    Fonte
+	mAttributes: [ FunctionQueryBinding = "{""exemplarFormulaName"":""Transformar o Arquivo de Exemplo (2)""}" ]
+	lineageTag: cabb1f3e-86fb-4cf7-9fb8-2b2e07d9ef7f
+	queryGroup: 'Transformar Arquivo de Fato_venda\Consultas Auxiliares'
+
+	annotation PBI_ResultType = Function
+

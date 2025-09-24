@@ -1,0 +1,7 @@
+role 'Diretoria Geral'
+	modelPermission: read
+
+	tablePermission D_Vendedor = [Cod_Vend] <> 0
+
+	annotation PBI_Id = 567fedfa2e0244da87d7a37f6e9cd970
+

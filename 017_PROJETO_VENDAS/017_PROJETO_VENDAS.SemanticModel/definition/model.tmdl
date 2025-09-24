@@ -1,0 +1,58 @@
+model Model
+	culture: pt-BR
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: pt-BR
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+queryGroup 'Transformar Arquivo de Fato_meta'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Transformar Arquivo de Fato_meta\Consultas Auxiliares'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup 'Transformar Arquivo de Fato_venda'
+
+	annotation PBI_QueryGroupOrder = 2
+
+queryGroup 'Transformar Arquivo de Fato_venda\Consultas Auxiliares'
+
+	annotation PBI_QueryGroupOrder = 0
+
+queryGroup Fato
+
+	annotation PBI_QueryGroupOrder = 4
+
+queryGroup Dimensao
+
+	annotation PBI_QueryGroupOrder = 5
+
+annotation PBI_QueryOrder = ["D_Canal_vendas","D_categoria","D_Clientes","D_Produto","D_UF","D_Vendedor","Fato_venda","Fato_meta","Parâmetro1","Transformar o Arquivo de Exemplo","Arquivo de Amostra","Transformar Arquivo","Parâmetro2","Transformar o Arquivo de Exemplo (2)","Arquivo de Amostra (2)","Transformar Arquivo (2)"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table D_Canal_vendas
+ref table DateTableTemplate_ae44be9b-2916-438c-862d-b8c666c20aee
+ref table D_categoria
+ref table D_Clientes
+ref table D_Produto
+ref table D_UF
+ref table D_Vendedor
+ref table Fato_venda
+ref table Fato_meta
+ref table D_CALENDARIO
+ref table _Medidas
+ref table P_MES_ACUM
+ref table P_SIMULA
+
+ref role 'Gerente 1'
+ref role 'Gerente 2'
+ref role 'Diretoria Geral'
+
+ref cultureInfo pt-BR
+

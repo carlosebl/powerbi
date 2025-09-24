@@ -1,0 +1,75 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.2.0/schema.json",
+  "name": "84d4b7d20082fb118d31",
+  "position": {
+    "x": 288,
+    "y": 112,
+    "z": 4000,
+    "height": 432,
+    "width": 544
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "F_acoes"
+                    }
+                  },
+                  "Property": "NomeAção"
+                }
+              },
+              "queryRef": "F_acoes.NomeAção"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Valor Total Investido"
+                }
+              },
+              "queryRef": "_Medidas.Valor Total Investido"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Valor Total Corrente"
+                }
+              },
+              "queryRef": "_Medidas.Valor Total Corrente"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Medidas"
+                    }
+                  },
+                  "Property": "Ganho/Perda"
+                }
+              },
+              "queryRef": "_Medidas.Lucro"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

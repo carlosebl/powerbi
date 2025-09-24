@@ -1,0 +1,130 @@
+{
+  "version": "1.0.0",
+  "diagrams": [
+    {
+      "isDefault": true,
+      "layout": {
+        "boundingBoxHeight": 647.86512434933479,
+        "boundingBoxWidth": 1893,
+        "boundingBoxPosition": {
+          "x": 0,
+          "y": 0
+        },
+        "nodes": [
+          {
+            "layedOut": true,
+            "nodeIndex": "D_CALENDARIO",
+            "height": 163.84210526315786,
+            "width": 180,
+            "left": 838.63157894736855,
+            "top": 235.5263157894737
+          },
+          {
+            "layedOut": true,
+            "nodeIndex": "D_Canal_vendas",
+            "height": 155,
+            "width": 180,
+            "left": 26.68791208791211,
+            "top": 0
+          },
+          {
+            "layedOut": true,
+            "nodeIndex": "D_Clientes",
+            "height": 179,
+            "width": 180,
+            "left": 98.3197802197804,
+            "top": 212.6307692307692
+          },
+          {
+            "layedOut": true,
+            "nodeIndex": "D_Produto",
+            "height": 179,
+            "width": 180,
+            "left": 691.06813186813179,
+            "top": 14.487912087912061
+          },
+          {
+            "layedOut": true,
+            "nodeIndex": "D_UF",
+            "height": 116,
+            "width": 141,
+            "left": 0,
+            "top": 417.69010989010985
+          },
+          {
+            "layedOut": true,
+            "nodeIndex": "D_Vendedor",
+            "height": 155,
+            "width": 180,
+            "left": 663.46911509543088,
+            "top": 492.86512434933485
+          },
+          {
+            "layedOut": true,
+            "nodeIndex": "D_categoria",
+            "height": 155,
+            "width": 180,
+            "left": 986.05934065934071,
+            "top": 12.490109890109903
+          },
+          {
+            "layedOut": true,
+            "nodeIndex": "Fato_meta",
+            "height": 203,
+            "width": 180,
+            "left": 1046.5008675534989,
+            "top": 436.71197223828807
+          },
+          {
+            "layedOut": true,
+            "nodeIndex": "Fato_venda",
+            "height": 300,
+            "width": 180,
+            "left": 393.34938469769924,
+            "top": 80.99353829690908
+          },
+          {
+            "layedOut": true,
+            "nodeIndex": "_Medidas",
+            "height": 227,
+            "width": 180,
+            "left": 240.82316576844596,
+            "top": 419.22125278624389
+          },
+          {
+            "layedOut": true,
+            "nodeIndex": "P_MES_ACUM",
+            "height": 232,
+            "width": 180,
+            "left": 1379.8,
+            "top": 0
+          },
+          {
+            "layedOut": true,
+            "nodeIndex": "P_SIMULA",
+            "height": 232,
+            "width": 180,
+            "left": 1713,
+            "top": 0
+          }
+        ]
+      },
+      "name": "Todas as tabelas",
+      "tables": [
+        "D_CALENDARIO",
+        "D_Canal_vendas",
+        "D_Clientes",
+        "D_Produto",
+        "D_UF",
+        "D_Vendedor",
+        "D_categoria",
+        "Fato_meta",
+        "Fato_venda",
+        "_Medidas",
+        "P_MES_ACUM",
+        "P_SIMULA"
+      ],
+      "zoomValue": 76
+    }
+  ]
+}

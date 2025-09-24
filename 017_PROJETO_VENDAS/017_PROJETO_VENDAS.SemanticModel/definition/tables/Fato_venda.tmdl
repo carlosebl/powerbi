@@ -1,0 +1,151 @@
+table Fato_venda
+	lineageTag: c4853b6a-e3f4-4d1f-8f23-754c8eb43273
+
+	column 'Nome da Origem'
+		dataType: string
+		isHidden
+		lineageTag: c163e5f7-9c16-45bc-9c7a-9219808a40ca
+		summarizeBy: none
+		sourceColumn: Nome da Origem
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Dt_Venda
+		dataType: dateTime
+		formatString: dd/mm/yyyy
+		lineageTag: df71db2f-858c-4ca9-b80b-d89ece94052f
+		summarizeBy: none
+		sourceColumn: Dt_Venda
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Cod_prod
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: d3fc870c-7703-49bb-b208-9a430ed5b3b5
+		summarizeBy: none
+		sourceColumn: Cod_prod
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cod_Cliente
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 67cbd6e9-c1e5-4ac6-a202-af42f7404683
+		summarizeBy: none
+		sourceColumn: Cod_Cliente
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Pr_custo
+		dataType: double
+		lineageTag: 2ac51324-ca58-4583-8ae0-a50a29a5e8d6
+		summarizeBy: sum
+		sourceColumn: Pr_custo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Pr_Unit
+		dataType: double
+		lineageTag: 78dc7a29-ca8f-4256-8dbc-5df9fe223661
+		summarizeBy: sum
+		sourceColumn: Pr_Unit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Qtde
+		dataType: int64
+		formatString: 0
+		lineageTag: c969901d-0483-4532-8b4a-f024755f8bf2
+		summarizeBy: sum
+		sourceColumn: Qtde
+
+		annotation SummarizationSetBy = Automatic
+
+	column Situacao
+		dataType: string
+		lineageTag: 141a5832-8959-48ec-9e64-e5aee95d5284
+		summarizeBy: none
+		sourceColumn: Situacao
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isText":true}
+
+	column Cod_Canal_vendas
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 89370a9a-da22-4c89-8817-b9e22739502e
+		summarizeBy: none
+		sourceColumn: Cod_Canal_vendas
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cod_Vend
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 67b31698-1704-4dec-8953-1038440f0a06
+		summarizeBy: none
+		sourceColumn: Cod_Vend
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total Vendas' = Fato_venda[Pr_Unit]*Fato_venda[Qtde]
+		displayFolder: Totais
+		lineageTag: 8e7382b3-465a-49ee-babf-4f8d1d373528
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Total Custo' = Fato_venda[Pr_custo]*Fato_venda[Qtde]
+		displayFolder: Totais
+		lineageTag: 57be6430-6f2c-4d1e-892e-e5a9255d7d94
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition Fato_venda-847fdac9-aca6-477e-9a47-2358c8198d8b = m
+		mode: import
+		queryGroup: Fato
+		source =
+				let
+				    Fonte = Folder.Files("D:\EAD\Power BI 3\Fontes\Vendas\Fato_venda"),
+				    #"Arquivos Ocultos Filtrados1" = Table.SelectRows(Fonte, each [Attributes]?[Hidden]? <> true),
+				    #"Invocar Função Personalizada1" = Table.AddColumn(#"Arquivos Ocultos Filtrados1", "Transformar Arquivo (2)", each #"Transformar Arquivo (2)"([Content])),
+				    #"Colunas Renomeadas1" = Table.RenameColumns(#"Invocar Função Personalizada1", {"Name", "Nome da Origem"}),
+				    #"Outras Colunas Removidas1" = Table.SelectColumns(#"Colunas Renomeadas1", {"Nome da Origem", "Transformar Arquivo (2)"}),
+				    #"Coluna de Tabela Expandida1" = Table.ExpandTableColumn(#"Outras Colunas Removidas1", "Transformar Arquivo (2)", Table.ColumnNames(#"Transformar Arquivo (2)"(#"Arquivo de Amostra (2)"))),
+				    #"Tipo Alterado" = Table.TransformColumnTypes(#"Coluna de Tabela Expandida1",{{"Nome da Origem", type text}, {"Dt_Venda", type date}, {"Cod_prod", Int64.Type}, {"Cod_Cliente", Int64.Type}, {"Pr_custo", type number}, {"Pr_Unit", type number}, {"Qtde", Int64.Type}, {"Situacao", type text}, {"Cod_Canal_vendas", Int64.Type}, {"Cod_Vend", Int64.Type}})
+				in
+				    #"Tipo Alterado"
+
+	annotation PBI_ResultType = Table
+

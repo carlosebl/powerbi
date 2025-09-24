@@ -1,0 +1,37 @@
+relationship e29692a2-9f64-4ff1-9946-135537bc76f1
+	crossFilteringBehavior: bothDirections
+	fromColumn: Fato_venda.Cod_prod
+	toColumn: D_Produto.Cod_prod
+
+relationship b709c585-84d0-406a-94a8-8c5cc8ceb968
+	fromColumn: Fato_venda.Cod_Vend
+	toColumn: D_Vendedor.Cod_Vend
+
+relationship b7839dcc-45de-449a-b88c-5f2b37a41859
+	fromColumn: Fato_venda.Cod_Canal_vendas
+	toColumn: D_Canal_vendas.Cod_Canal_vendas
+
+relationship 12473090-7f59-448f-b5f3-5821f2d515c6
+	fromColumn: Fato_venda.Cod_Cliente
+	toColumn: D_Clientes.Cod_Cliente
+
+relationship 6a7875cc-2976-4709-8ddd-b9fb73441066
+	fromColumn: D_Clientes.Cod_uf
+	toColumn: D_UF.Cod_uf
+
+relationship 518c5f06-094c-46f2-9ae2-2e3eb9df5650
+	fromColumn: D_Produto.Cod_Categoria
+	toColumn: D_categoria.Cod_Categoria
+
+relationship 48a6f48f-c02d-4167-802a-60d48f7b97e6
+	fromColumn: Fato_meta.Cod_vend
+	toColumn: D_Vendedor.Cod_Vend
+
+relationship 54690390-e881-4585-b276-28f944b1bcd7
+	fromColumn: Fato_venda.Dt_Venda
+	toColumn: D_CALENDARIO.Data_ref
+
+relationship 546a0b11-ac3e-4f05-a456-5a9b32b9a9c3
+	fromColumn: Fato_meta.Mês/Ano
+	toColumn: D_CALENDARIO.Data_ref
+
